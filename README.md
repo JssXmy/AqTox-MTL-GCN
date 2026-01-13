@@ -14,3 +14,9 @@ dgl == 2.2.1+cu118
 To replicate or devleop models more conveniently, the environment file <environmental.yml> is provided to install environment directly.
 ```bash
 conda env create -f environment.yml
+```
+## Main
+
+### Data
+`AuqaTox_scr.csv`: Aquatic toxicity dataset with 15976 SMILES codes and discrete labels, which is involved 6 aquatic toxicity end points: fish acute tocicity(FishAT), fish chronic toxicity (FishCT), invetebrates acute toxicity (DMAT), inveterbrates chronic toxicity (DMCT), algal acute toxicity (AlgAT), algal chronic toxicity (AlgCT).
+`Chemical 
