@@ -48,11 +48,11 @@ args['data_name'] = 'AquaTox_scr'  # change
 args['times'] = 10
 
 # selected task, generate select task index, task class, and classification_num
-args['select_task_list'] = ['FishLC50']  # change (excel list name) - removed pAlaGroErC50 as it's not in binary file
+args['select_task_list'] = ['FishAT']  # change (excel list name) - removed pAlaGroErC50 as it's not in binary file
 args['select_task_index'] = []
 args['classification_num'] = 0
 args['regression_num'] = 0
-args['all_task_list'] = ['FishLC50', 'FishEL_NOEC', 'DMRepNOEC', 'DMImbEC50', 'AlaGroErC50']  # change (excel list name) - matches binary file structure
+args['all_task_list'] = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  # change (excel list name) - matches binary file structure
 # generate select task index
 for index, task in enumerate(args['all_task_list']):
     if task in args['select_task_list']:
@@ -60,9 +60,9 @@ for index, task in enumerate(args['all_task_list']):
 
 # generate classification_num
 for task in args['select_task_list']:
-    if task in ['FishLC50', 'FishEL_NOEC', 'DMRepNOEC', 'DMImbEC50', 'AlaGroErC50']:
+    if task in ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']:
         args['classification_num'] = args['classification_num'] + 1
-    if task in ['logKow', 'pFishLC50', 'pFishEL_NOEC', 'pDMRepNOEC', 'pDMImbEC50', 'pAlaGroErC50']:
+    if task in ['', '', '', '', '', '']:
         args['regression_num'] = args['regression_num'] + 1
 
 # generate classification_num
