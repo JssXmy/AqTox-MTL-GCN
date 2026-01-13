@@ -11,7 +11,7 @@ pytorch == 2.1.0+cu118
 
 dgl == 2.2.1+cu118
 
-To replicate or devleop models more conveniently, the environment file <environmental.yml> is provided to install environment directly.
+To replicate or devleop models more conveniently, the environment file '`environmental.yml`' is provided to install environment directly.
 ```bash
 conda env create -f environment.yml
 ```
@@ -20,7 +20,7 @@ conda env create -f environment.yml
 ### Data
 `AuqaTox_scr.csv`: Aquatic toxicity dataset with 15976 SMILES codes and discrete labels, which is involved 6 aquatic toxicity end points: fish acute tocicity(FishAT), fish chronic toxicity (FishCT), invetebrates acute toxicity (DMAT), inveterbrates chronic toxicity (DMCT), algal acute toxicity (AlgAT), algal chronic toxicity (AlgCT).
 
-`Chemical inventories`: This dataset has approximately 1000000 compounds, which can be acquired at: https://doi.org/10.1021/acs.est.3c03860
+`Chemical inventories`: This dataset has approximately 1000000 compounds, which can be acquired from references: DOI: 10.1021/acs.est.3c03860)
 
 ### MTL-GCN
 MTL-GCN model codes consist of folder'`utils`', file '`build_graph_dataset.py`' and '`Toxicity_MGA_MT.py`'.The `utils` file contains the codes related to molecular graph encoding and the model architecture.
@@ -35,7 +35,7 @@ The ST-GCN model shares the same algorithm as MTL-GCN. There is no need to gener
 ST-ML Model codes related to ST traditional ML models is located in the '`ML_Modeling`' folder, which includes '`fp_generation_{fp type}.py`' for generating molecular fingerprints(fp) and '`{algorithms}_{fp type}_classification.py`'
 
 ### Applicability domain (AD)
-Code related to the Applicability Domain is located in the '`AD`' folder. This includes data files '`TrainingSet.xlsx`' and '`ExternalSet_pred.xlsx`', as well as the code files '`AD.py`' and '`metAppDomain_ADM.py`'.
+Code related to the Applicability Domain is located in the '`AD`' folder. This includes data files '`TrainingSet.xlsx`' and '`ExternalSet_pred.xlsx`', as well as the code files '`AD.py`' and '`metAppDomain_ADM.py`'. (The code origninated from previous reference: DOI: 10.1021/acs.chemrestox.3c00074)
 
 `metAppDomain_ADM.py`: Required files for structure activity landscape-based application domains (ADSAL);
 
