@@ -24,9 +24,10 @@ conda env create -f environment.yml
 
 ### MTL-GCN
 MTL-GCN model codes consist of folder'`utils`', file '`build_graph_dataset.py`' and '`Toxicity_MGA_MT.py`'.The `utils` file contains the codes related to molecular graph encoding and the model architecture.
-step1: Run `build_graph_dataset.py` to create molecular graph. `note: modify the file path and name of the training data as needed,the data example provided in the `AuqaTox_scr.csv` on data structures
 
-step2: Run the `Toxicity_MGA_MT.py` to train MTL-GCN model. Finally, you will receive the prediction results and performance of the model.
+Step1: Run `build_graph_dataset.py` to create molecular graph. `note: modify the file path and name of the training data as needed,the data example provided in the `AuqaTox_scr.csv` on data structures
+
+Step2: Run the `Toxicity_MGA_MT.py` to train MTL-GCN model. Finally, you will receive the prediction results and performance of the model.
 
 ### Single-task (ST) Models
 ST Models include ST-GCN and traditional machine learning (ML) models, involving RF, XGBoost, LightGBM.
