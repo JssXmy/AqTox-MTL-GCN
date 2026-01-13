@@ -41,7 +41,7 @@ Code related to the Applicability Domain is located in the '`AD`' folder. This i
 
 `AD.py` : characterize the ADSAL of a model; Users can set different application domain stringency levels according to the instructions in the codes and their own needs, in order to achieve the function of improving the prediction of the MTL-GCN model.
 
-`TrainingSet.xlsx` and `ExternalSet_pred.xlsx`: Training and e xternal validation sets used in the current study for developing the optimal MTL-GCN model. Note: The data structure in the training set and external validation sets provided here are not real but serve as examples only. You can run `AD.py` successfully by simply following the structure of these example data.
+`TrainingSet.xlsx` and `ExternalSet_pred.xlsx`: Training and e xternal validation sets used in the current study for developing the optimal MTL-GCN model. Note: The data structure in the training set and external validation sets provided here are not real but serve as examples only. The `AD.py` file can be successfully executed by following the structure of the example data.
 
 
 
