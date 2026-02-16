@@ -1,5 +1,5 @@
 # MTL-GCN-AqTox
-The files related to the paper published in Chemical Research in Toxicology:
+The files related to the paper published in Global Environmental Science:
 "Multi-Task Graph Convolutional Network Model with Improved Performance and Broad Applicability Domains for Identifying Aquatic Toxic Chemicals"
 
 ## Environment
