@@ -1,4 +1,4 @@
-smiles,FishAT,FishCT,DMAT,DMCT,AlgAT,AlgCT,group
+smiles,FishAT,FishCT,CruAT,CruCT,AlgAT,AlgCT,group
 CCC1(c2ccccc2)C(=O)NC(=O)NC1=O,1,,,,,,train
 CC12CCC3c4ccc(O)cc4CCC3C1CCC2O,1,,,,,,train
 Clc1ccc(C(c2ccc(Cl)cc2)C(Cl)(Cl)Cl)cc1,1,,,,,,train
@@ -17513,3 +17513,4 @@ CCCCCCCCCCCCCCC(O)C(O)C(N)CO,,,,,,1,valid
 CNC(=O)c1cc(Oc2ccc(NC(=O)Nc3ccc(Cl)c(C(F)(F)F)c3)c(F)c2)ccn1,,,,,,1,train
 BrC1CC(Br)CC(Br)CC(Br)CC(Br)CC(Br)C1,,,,,,1,train
 C=CC(=O)OCc1c(Br)c(Br)c(Br)c(Br)c1Br,,,,,,1,test
+
