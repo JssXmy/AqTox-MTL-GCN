@@ -16,7 +16,7 @@ space = {'max_depth': hp.choice('max_depth', list(range(3,10,1))),
          'num_leaves': hp.choice('num_leaves', list(range(31,128,10))),
          }
 
-task_list = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']
+task_list = ['FishAT', 'CruAT', 'AlgAT', 'FishCT', 'CruCT', 'AlgCT']
 for lgb_graph_feats_task in task_list:
     print('***************************************************************************************************')
     print(lgb_graph_feats_task)
@@ -129,3 +129,4 @@ for k,v in parameters.items():
     filename.write(k + ':' + str(v))
     filename.write('\n')
 filename.close()
+
