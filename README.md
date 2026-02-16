@@ -20,17 +20,15 @@ conda env create -f environment.yml
 ### Data
 `AuqaTox.csv`: Aquatic toxicity dataset with 17,514 SMILES codes and discrete labels, which is involved 6 aquatic toxicity endpoints: fish acute tocicity(FishAT), fish chronic toxicity (FishCT), crustacean acute toxicity (CruAT), crustacean chronic toxicity (CruCT), algal acute toxicity (AlgAT), algal chronic toxicity (AlgCT);
 
-`Chemical inventories`: This dataset has approximately 1000000 compounds, which can be acquired from references: DOI: 10.1021/acs.est.3c03860).
-
 ### Multi-task learning (MTL-GCN) Model
-MTL-GCN model codes consist of folder'`utils`', file '`build_graph_dataset.py`' and '`Toxicity_MGA_MT.py`'.The `utils` file contains the codes related to molecular graph encoding and the model architecture.
+MTL-GCN framework codes consist of folder'`utils`', file '`build_graph_dataset.py`' and '`Toxicity_MTL_GCN.py`'.The `utils` file contains the codes related to molecular graph encoding and the model architecture.
 
-Step1: Run `build_graph_dataset.py` to create molecular graph. `note: modify the file path and name of the training data as needed,the data example provided in the `AuqaTox_scr.csv` on data structures;
+Step1: Run `build_graph_dataset.py` to create molecular graph. `note: modify the file path and name of the training data as needed,the data example provided in the `AuqaTox.csv` on data structures;
 
-Step2: Run the `Toxicity_MGA_MT.py` to train MTL-GCN model. Finally, you will receive the prediction results and performance of the model.
+Step2: Run the `Toxicity_MTL_GCN.py` to train MTL-GCN model. Finally, you will receive the prediction results and performance of the model.
 
 ### Single-task learning (STL) Models
-ST Models include ST-GCN and traditional machine learning (ML) models, involving RF, XGBoost, LightGBM.
+ST Models include ST-GCN and classical machine learning (ML) models, involving RF, XGBoost, LightGBM.
 The ST-GCN model shares the same algorithm as MTL-GCN. There is no need to generate separate molecular graph data for each endpoint. Once the multi-task data is created, simply update the '`args['select_task_list']`' in `Toxicity_MGA_ST.py` and ruin it then to build single-task models for different endpoints;
 
 ST-ML Model codes related to ST traditional ML models is located in the '`ML_Modeling`' folder, which includes '`fp_generation_{fp type}.py`' for generating molecular fingerprints(fp) and '`{algorithms}_{fp type}_classification.py`'.
