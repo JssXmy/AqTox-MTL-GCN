@@ -122,13 +122,6 @@ for time_id in range(args['times']):
     loss_criterion_c = torch.nn.BCEWithLogitsLoss(reduction='none', pos_weight=pos_weight_np.to(args['device']))
     loss_criterion_r = torch.nn.MSELoss(reduction='none')
 
-#     class_weights = class_weight(train_set, args['classification_num'])
-#     class_weights = class_weights / class_weights.norm(p=2, dim=1, keepdim=True)
-#     loss_criterion_c_w = torch.nn.BCEWithLogitsLoss(
-#     reduction='none',
-#     pos_weight=class_weights[:, 1].to(args['device'])  # 取第二列作为正样本权重
-# )
-
     model = MGA(in_feats=args['in_feats'], rgcn_hidden_feats=args['rgcn_hidden_feats'],
                 n_tasks=task_number, rgcn_drop_out=args['rgcn_drop_out'],
                 classifier_hidden_feats=args['classifier_hidden_feats'], dropout=args['drop_out'],
