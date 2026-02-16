@@ -44,7 +44,7 @@ args['loop'] = True
 
 # task name (model name)
 args['task_name'] = 'MTL-scr-256256128128'  # change
-args['data_name'] = 'AquaTox_scr'  # change
+args['data_name'] = 'AquaTox'  # change
 args['times'] = 10
 # FishAT,DMCT,DMAT,AlgAT,FishCT,AlgCT,
 # selected task, generate select task index, task class, and classification_num
