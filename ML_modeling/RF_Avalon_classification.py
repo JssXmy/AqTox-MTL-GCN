@@ -14,7 +14,7 @@ space = {'max_depth': hp.choice('max_depth', list(range(3,20,1))),
          'max_samples': hp.choice('max_samples', [0.7, 0.8, 0.9, 1.0]),
          }
 
-task_list = ['FishLC50', 'FishEL_NOEC', 'DMRepNOEC', 'DMImbEC50', 'AlaGroErC50']
+task_list = ['FishCT','DMAT', 'FishAT',  'DMCT', 'AlgAT','AlgCT']
 for rf_graph_feats_task in task_list:
     print('***************************************************************************************************')
     print(rf_graph_feats_task)
@@ -119,3 +119,4 @@ for k,v in parameters.items():
     filename.write(k + ':' + str(v))
     filename.write('\n')
 filename.close()
+
