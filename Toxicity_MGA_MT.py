@@ -36,7 +36,7 @@ args['mode'] = 'higher'
 args['in_feats'] = 40
 args['rgcn_hidden_feats'] = [256, 128]
 args['classifier_hidden_feats'] = 128
-args['rgcn_drop_out'] = 0.3
+args['rgcn_drop_out'] = 0.4
 args['drop_out'] = 0.3
 args['lr'] = 3
 args['weight_decay'] = 5
@@ -48,11 +48,11 @@ args['data_name'] = 'AquaTox_scr'  # change
 args['times'] = 10
 # FishAT,DMCT,DMAT,AlgAT,FishCT,AlgCT,
 # selected task, generate select task index, task class, and classification_num
-args['select_task_list'] = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  # change (excel list name) - removed pAlaGroErC50 as it's not in binary file
+args['select_task_list'] = ['FishCT','DMAT', 'FishAT',  'DMCT', 'AlgAT','AlgCT']  # change (excel list name) - removed pAlaGroErC50 as it's not in binary file
 args['select_task_index'] = []
 args['classification_num'] = 0
 args['regression_num'] = 0
-args['all_task_list'] = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  # change (excel list name) - matches binary file structure
+args['all_task_list'] = ['FishCT','DMAT', 'FishAT',  'DMCT', 'AlgAT','AlgCT']  # change (excel list name) - matches binary file structure
 # generate select task index
 for index, task in enumerate(args['all_task_list']):
     if task in args['select_task_list']:
@@ -60,7 +60,7 @@ for index, task in enumerate(args['all_task_list']):
 
 # generate classification_num
 for task in args['select_task_list']:
-    if task in ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']:
+    if task in ['FishCT','CruAT', 'FishAT',  'CruCT', 'AlgAT','AlgCT']:
         args['classification_num'] = args['classification_num'] + 1
     if task in ['logKow', 'pFishLC50', 'pFishEL_NOEC', 'pDMRepNOEC', 'pDMImbEC50', 'pAlaGroErC50']:
         args['regression_num'] = args['regression_num'] + 1
@@ -185,17 +185,6 @@ m, s = divmod(elapsed, 60)
 h, m = divmod(m, 60)
 print("Time used:", "{:d}:{:d}:{:d}".format(int(h), int(m), int(s)))
 
-
-####################################### predict ##########################################
-# args['pretrained_model'] = 'KOW预训练_early_stop.pth'
-# pre_model = load_pretrained(model_path='model/大型溞生殖毒性_early_stop.pth', args=args).to(args['device'])
-# pre_bin_path = 'prediction/' + args['data_name'] + '.bin'
-# pre_input_csv = 'prediction/'+ args['data_name'] +'.csv'
-# predict_set = build_dataset.load_graph_for_predict(bin_path=pre_bin_path, input_csv_path=pre_input_csv, 
-#                                                    select_task_names=args['select_task_list'], device=args['device'])
-# predict_loader = DataLoader(dataset=predict_set, batch_size=args['batch_size'], collate_fn=collate_predict)
-# pre_output_path = 'prediction/' + args['task_name'] + '_predictions.csv'   
-# result_df = run_predict(args=args,model=pre_model, data_loader=predict_loader, output_path=pre_output_path)
 
 
 
