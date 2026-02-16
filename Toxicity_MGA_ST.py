@@ -52,7 +52,7 @@ args['select_task_list'] = ['FishAT']  # change (excel list name) - removed pAla
 args['select_task_index'] = []
 args['classification_num'] = 0
 args['regression_num'] = 0
-args['all_task_list'] = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  # change (excel list name) - matches binary file structure
+args['all_task_list'] = ['FishCT','DMAT', 'FishAT',  'DMCT', 'AlgAT','AlgCT'] # change (excel list name) - matches binary file structure
 # generate select task index
 for index, task in enumerate(args['all_task_list']):
     if task in args['select_task_list']:
@@ -60,7 +60,7 @@ for index, task in enumerate(args['all_task_list']):
 
 # generate classification_num
 for task in args['select_task_list']:
-    if task in ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']:
+    if task in ['FishCT','DMAT', 'FishAT',  'DMCT', 'AlgAT','AlgCT']:
         args['classification_num'] = args['classification_num'] + 1
     if task in ['', '', '', '', '', '']:
         args['regression_num'] = args['regression_num'] + 1
@@ -122,12 +122,6 @@ for time_id in range(args['times']):
     loss_criterion_c = torch.nn.BCEWithLogitsLoss(reduction='none', pos_weight=pos_weight_np.to(args['device']))
     loss_criterion_r = torch.nn.MSELoss(reduction='none')
 
-#     class_weights = class_weight(train_set, args['classification_num'])
-#     class_weights = class_weights / class_weights.norm(p=2, dim=1, keepdim=True)
-#     loss_criterion_c_w = torch.nn.BCEWithLogitsLoss(
-#     reduction='none',
-#     pos_weight=class_weights[:, 1].to(args['device'])  # 取第二列作为正样本权重
-# )
 
     model = MGA(in_feats=args['in_feats'], rgcn_hidden_feats=args['rgcn_hidden_feats'],
                 n_tasks=task_number, rgcn_drop_out=args['rgcn_drop_out'],
