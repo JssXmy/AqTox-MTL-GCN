@@ -6,24 +6,11 @@ import numpy as np
 import os
 
 def calculate_avalon_fingerprint(smiles, n_bits=512):
-    """
-    计算Avalon分子指纹
-    
-    Parameters:
-    smiles (str): SMILES字符串
-    n_bits (int): 指纹位数，默认512位
-    
-    Returns:
-    list: 二进制指纹列表，如果SMILES无效则返回None
-    """
     try:
-        # 从SMILES创建分子对象
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             print(f"警告: 无法解析SMILES: {smiles}")
             return None
-        
-        # 计算Avalon指纹
         fp = pyAvalonTools.GetAvalonFP(mol, nBits=n_bits)
         
         # 转换为二进制列表
@@ -35,21 +22,10 @@ def calculate_avalon_fingerprint(smiles, n_bits=512):
         return None
 
 def process_excel_file(input_file, output_file=None, smiles_column='SMILES', n_bits=512):
-    """
-    处理Excel文件，计算Avalon指纹并保存结果
-    
-    Parameters:
-    input_file (str): 输入Excel文件路径
-    output_file (str): 输出Excel文件路径，如果为None则自动生成
-    smiles_column (str): SMILES列的名称
-    n_bits (int): 指纹位数，默认512位
-    """
-    
-    # 检查输入文件是否存在
+
     if not os.path.exists(input_file):
         raise FileNotFoundError(f"输入文件不存在: {input_file}")
     
-    # 读取Excel文件
     print(f"正在读取文件: {input_file}")
     try:
         df = pd.read_excel(input_file)
@@ -139,3 +115,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
