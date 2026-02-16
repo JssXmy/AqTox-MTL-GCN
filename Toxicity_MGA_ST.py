@@ -43,8 +43,8 @@ args['weight_decay'] = 5
 args['loop'] = True 
 
 # task name (model name)
-args['task_name'] = 'STL-scr-FishLC50'  # change
-args['data_name'] = 'AquaTox_scr'  # change
+args['task_name'] = 'STL-scr'  # change
+args['data_name'] = 'AquaTox'  # change
 args['times'] = 10
 
 # selected task, generate select task index, task class, and classification_num
