@@ -31,7 +31,7 @@ Step2: Run the `Toxicity_MTL_GCN.py` to train MTL-GCN model. Finally, you will r
 ST Models include ST-GCN and classical machine learning (ML) models, involving RF, XGBoost, LightGBM.
 The ST-GCN model shares the same algorithm as MTL-GCN. There is no need to generate separate molecular graph data for each endpoint. Once the multi-task data is created, simply update the '`args['select_task_list']`' in `Toxicity_MGA_ST.py` and ruin it then to build single-task models for different endpoints;
 
-ST-ML Model codes related to ST traditional ML models is located in the '`ML_Modeling`' folder. Prior to execution, various molecular fingerprints must be calculated. The required input file structure and format are provided in this folder.
+ST-ML Model codes related to ST classical ML models is located in the '`ML_Modeling`' folder. Prior to execution, various molecular fingerprints must be calculated. The required input file structure and format are provided in this folder.
 
 
 
