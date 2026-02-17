@@ -1,0 +1,11 @@
+Canonical SMILES,index,smiles,source,Processing Log,Is Valid,Deduplication Strategy
+CCOCCCNC(=O)C(O)C(C)(C)CO,1,CCOCCCNC(=O)[C@H](O)C(C)(C)CO,1_Canada_DSL,Success,TRUE,smiles_only
+CC(C)(C)CC(C)(C)c1ccccc1O,2,CC(C)(C)CC(C)(C)c1ccccc1O,1_Canada_DSL,Success,TRUE,smiles_only
+O=C(O)CC(C(=O)O)c1ccc2c(c1)NC(S)S2,3,OC(=O)C[C@@H](C(O)=O)c1ccc2S[C@@H](S)Nc2c1,1_Canada_DSL,Success,TRUE,smiles_only
+Nc1ccc(-c2ccc(N)c3c2C(=O)c2ccccc2C3=O)c2c1C(=O)c1ccccc1C2=O,4,Nc1ccc(c2ccc(N)c3C(=O)c4ccccc4C(=O)c23)c5C(=O)c6ccccc6C(=O)c15,1_Canada_DSL,Success,TRUE,smiles_only
+CCN(CC)CCOC(=O)C1(C2CCCCC2)CCCCC1,5,[H+].[Cl-].CCN(CC)CCOC(=O)C1(CCCCC1)C2CCCCC2,1_Canada_DSL,Success,TRUE,smiles_only
+O=C1CCCCC1C1CCCCC1,6,O=C1CCCCC1C2CCCCC2,1_Canada_DSL,Success,TRUE,smiles_only
+O=C1CCC(C2CCCCC2)CC1,7,O=C1CCC(CC1)C2CCCCC2,1_Canada_DSL,Success,TRUE,smiles_only
+O=C1CCCC1C1CCCC1,8,O=C1CCCC1C2CCCC2,1_Canada_DSL,Success,TRUE,smiles_only
+Oc1ccccc1-c1ccccc1O,9,Oc1ccccc1c2ccccc2O,1_Canada_DSL,Success,TRUE,smiles_only
+O=C1C=Cc2ccccc2C1=NNc1ccc(-c2ccc(NN=C3C(=O)C=Cc4ccccc43)cc2S(=O)(=O)O)c(S(=O)(=O)O)c1,10,[Na+].[Na+].[O-][S](=O)(=O)c1cc(N\N=C2/C(=O)C=Cc3ccccc23)ccc1c4ccc(N\N=C5/C(=O)C=Cc6ccccc56)cc4[S]([O-])(=O)=O,1_Canada_DSL,Success,TRUE,smiles_only
