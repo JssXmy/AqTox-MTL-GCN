@@ -1,4 +1,4 @@
-# MTL-GCN-AqTox
+# AqTox-MTL-GCN
 The files related to the paper:
 "Multi-Task Graph Convolutional Network Model with Improved Performance and Broad Applicability Domains for Identifying Aquatic Toxic Chemicals"
 
