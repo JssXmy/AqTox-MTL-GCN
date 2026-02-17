@@ -28,8 +28,8 @@ Step1: Run `build_graph_dataset.py` to create molecular graphs. `note: modify th
 Step2: Run the `AqTox_MTL_GCN.py` to train MTL-GCN model. Finally, you will receive the prediction results and performance of the model.
 
 ### Single-task learning (STL) Models
-ST Models include ST-GCN and classical machine learning (ML) models, involving RF, XGBoost, LightGBM.
-The ST-GCN model shares the same algorithm as MTL-GCN. There is no need to generate separate molecular graph data for each endpoint. Once the multi-task data is created, simply update the '`args['select_task_list']`' in `AqTox_STL_GCN.py` and ruin it then to build single-task models for different endpoints;
+STL Models include STL-GCN and classical machine learning (ML) models, involving RF, XGBoost, LightGBM.
+The STL-GCN model shares the same algorithm as MTL-GCN. There is no need to generate separate molecular graph data for each endpoint. Once the multi-task data is created, simply update the '`args['select_task_list']`' in `AqTox_STL_GCN.py` and ruin it then to build single-task models for different endpoints;
 
 ST-ML Model codes related to ST classical ML models is located in the '`Classifical_ML_Model`' folder. Prior to execution, various molecular fingerprints must be calculated. The required input file structure and format are provided in this folder.
 
