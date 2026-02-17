@@ -1,0 +1,11 @@
+Canonical SMILES
+CCOCCCNC(=O)C(O)C(C)(C)CO
+CC(C)(C)CC(C)(C)c1ccccc1O
+O=C(O)CC(C(=O)O)c1ccc2c(c1)NC(S)S2
+Nc1ccc(-c2ccc(N)c3c2C(=O)c2ccccc2C3=O)c2c1C(=O)c1ccccc1C2=O
+CCN(CC)CCOC(=O)C1(C2CCCCC2)CCCCC1
+O=C1CCCCC1C1CCCCC1
+O=C1CCC(C2CCCCC2)CC1
+O=C1CCCC1C1CCCC1
+Oc1ccccc1-c1ccccc1O
+O=C1C=Cc2ccccc2C1=NNc1ccc(-c2ccc(NN=C3C(=O)C=Cc4ccccc43)cc2S(=O)(=O)O)c(S(=O)(=O)O)c1
