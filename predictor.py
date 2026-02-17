@@ -10,32 +10,23 @@ from rdkit import Chem
 import dgl
 import warnings
 warnings.filterwarnings('ignore')
-# 导入模块
 from utils.MY_GNN import MGA
 
-# 设置设备
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f" 使用设备: {device}")
 
 from AD.metAppDomain_ADM import NSG
 HAS_ADSAL = True
 
+# 'file', 'single',
+PREDICTION_MODE = 'file' 
 
-# =============================================================================
-# 配置参数 - 请在这里修改你的设置
-# =============================================================================
+INPUT_FILE = 'data/Chemcial_inventories.xlsx'        
+OUTPUT_FILE = 'prediction/Chemcial_inventories_prediction_with_AD_results.xlsx' 
 
-# 预测模式选择：'file', 'single', 'test'
-PREDICTION_MODE = 'file'  # 改为test模式进行测试
+# PREDICTION_MODE='single'
+# SINGLE_SMILES = 'CCO'  # 要预测的SMILES
 
-# 输入输出文件配置
-INPUT_FILE = 'data/Chemcial_inventories.xlsx'        # 输入的化合物文件
-OUTPUT_FILE = 'prediction/Chemcial_inventories_prediction_with_AD_results.xlsx'  # 输出文件名
-
-# 单个SMILES预测参数（当PREDICTION_MODE='single'时使用）
-SINGLE_SMILES = 'CCO'  # 要预测的SMILES
-
-# 每个终点的最佳应用域参数（针对不同终点使用不同阈值）
+# AD threshold
 TASK_SPECIFIC_AD_PARAMS = {
     'FishAT': {
         'OPTIMAL_DENSLB': 0.2,
@@ -63,53 +54,44 @@ TASK_SPECIFIC_AD_PARAMS = {
     }
 }
 
-# 模型和数据路径（与Toxicity_MGA_MT.py一致）
-MODEL_PATH = 'model/MTL-scr-256256128128_early_stop-3.pth'  # 与task_name一致的模型路径
-TRAINING_DATA_PATH = 'data/AquaTox_scr.csv'  # 训练数据路径
+# 
+MODEL_PATH = '/.pth'  
+TRAINING_DATA_PATH = 'data/AquaTox.csv'  # path of training data
 
-# 批处理参数（与Toxicity_MGA_MT.py一致）
-BATCH_SIZE = 256  # 模型预测的批次大小
-AD_BATCH_SIZE = 10000  # 应用域计算的批次大小（用于避免内存溢出）
-# MTL-scr模型参数（必须与Toxicity_MGA_MT.py训练时保持完全一致）
+# hyperparameter
+BATCH_SIZE = 256  
+AD_BATCH_SIZE = 10000  # Batch size for domain calculation (to avoid memory overflow)
+# Hyperparameter of MTL-GCN（Must be identical to those used during training in AqTox_MTL_GCN.py）
 MODEL_ARGS = {
     'in_feats': 40,
     'rgcn_hidden_feats': [256, 128],
     'n_tasks': 6,
     'classifier_hidden_feats': 128,
-    'rgcn_drop_out': 0.3,  # 训练时使用的值
-    'dropout': 0.3,        # 训练时使用的值
+    'rgcn_drop_out': 0., 
+    'dropout': 0.3,       
     'loop': True
 }
 
-# 任务名称列表（与训练时保持一致 - 必须与Toxicity_MGA_MT.py中的select_task_list顺序完全一致）
-TASK_NAMES = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  # 顺序必须与训练时一致！
+# List of task names (Must be consistent with training - The order must be identical to select_task_list in AqTox_MTL_GCN.py)
+TASK_NAMES = ['FishAT', 'DMAT', 'AlgAT', 'FishCT', 'DMCT', 'AlgCT']  
 
-# 图构建参数
 GRAPH_ARGS = {
     'atom_data_field': 'atom',
     'bond_data_field': 'etype'
 }
 
-# =============================================================================
-# 图构建和预测功能函数
-# =============================================================================
-
 def construct_molecule_graph(smiles):
-    """构建分子图 - 与训练时保持完全一致"""
     from utils.build_dataset import construct_RGCN_bigraph_from_smiles
 
     try:
-        # 使用与训练时相同的图构建函数
         g = construct_RGCN_bigraph_from_smiles(smiles)
         return g
     except Exception as e:
-        raise ValueError(f"构建分子图失败 - SMILES: {smiles}, 错误: {str(e)}")
+        raise ValueError(f"failed with constructed MG - SMILES: {smiles}, error: {str(e)}")
 
 class MTLScrPredictor:
-    """基于MGA模型的多任务水生毒性预测器"""
 
     def __init__(self, model_path, model_args=None):
-        """初始化预测器"""
         self.model_path = model_path
         self.device = device
         self.model_args = model_args or MODEL_ARGS
@@ -118,57 +100,48 @@ class MTLScrPredictor:
         self._load_model()
 
     def _load_model(self):
-        """加载MGA模型"""
         if not os.path.exists(self.model_path):
             raise FileNotFoundError(f"模型文件不存在: {self.model_path}")
 
-        print(f" 加载MTL-scr模型: {self.model_path}")
-        print(f" 使用设备: {self.device}")
+        print(f" loading MTL-GCN: {self.model_path}")
+        print(f" device: {self.device}")
 
-        # 构建模型 - 使用与Toxicity_MGA_MT.py一致的参数名
         self.model = MGA(
             in_feats=self.model_args['in_feats'],
             rgcn_hidden_feats=self.model_args['rgcn_hidden_feats'],
             n_tasks=self.model_args['n_tasks'],
             classifier_hidden_feats=self.model_args['classifier_hidden_feats'],
             rgcn_drop_out=self.model_args['rgcn_drop_out'],
-            dropout=self.model_args['dropout'],  # 注意：MGA模型参数名是dropout
+            dropout=self.model_args['dropout'],  
             loop=self.model_args['loop']
         )
 
-        # 加载模型权重 - 兼容不同的保存格式
         checkpoint = torch.load(self.model_path, map_location=self.device)
 
-        # 检查checkpoint格式
         if 'model_state_dict' in checkpoint:
-            # 新格式：包含完整训练状态
             self.model.load_state_dict(checkpoint['model_state_dict'])
-            print(f" 加载完整checkpoint (epoch: {checkpoint.get('epoch', 'unknown')})")
+            print(f" loading checkpoint (epoch: {checkpoint.get('epoch', 'unknown')})")
         else:
-            # 旧格式：直接是模型状态字典
             self.model.load_state_dict(checkpoint)
-            print(f" 加载模型状态字典")
+            print(f" loading status dict")
 
-        # 移动模型到设备并设置为评估模式
         self.model.to(self.device)
         self.model.eval()
 
-        print(f" MTL-scr模型加载成功 (设备: {self.device})")
+        print(f" Successfully loading MTL-GCN (device: {self.device})")
 
     def _validate_smiles(self, smiles):
-        """验证SMILES字符串"""
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
-                return False, "无效的SMILES字符串"
+                return False, "Invalid SMILES"
 
             canonical_smiles = Chem.MolToSmiles(mol, isomericSmiles=True)
             return True, canonical_smiles
         except Exception as e:
-            return False, f"SMILES处理错误: {str(e)}"
+            return False, f"SMILES error: {str(e)}"
 
     def predict_single(self, smiles):
-        """预测单个SMILES的多任务毒性"""
         is_valid, result = self._validate_smiles(smiles)
         if not is_valid:
             return {'smiles': smiles, 'error': result}
@@ -176,27 +149,21 @@ class MTLScrPredictor:
         canonical_smiles = result
 
         try:
-            # 构建分子图
             g = construct_molecule_graph(canonical_smiles)
-
-            # 批处理图
             bg = dgl.batch([g]).to(self.device)
             atom_feats = bg.ndata[GRAPH_ARGS['atom_data_field']].float().to(self.device)  # 确保float类型
             bond_feats = bg.edata[GRAPH_ARGS['bond_data_field']].long().to(self.device)   # 确保long类型
 
             with torch.no_grad():
-                # 获取多任务预测结果
                 predictions = self.model(bg, atom_feats, bond_feats)
                 predictions = torch.sigmoid(predictions).cpu().numpy()[0]  # 应用sigmoid并转换为numpy
 
-            # 构建结果字典
             result_dict = {
                 'smiles': smiles,
                 'canonical_smiles': canonical_smiles,
                 'error': None
             }
 
-            # 为每个任务添加预测结果
             for i, task_name in enumerate(self.task_names):
                 probability = float(predictions[i])
                 prediction = int(probability > 0.5)
@@ -211,124 +178,105 @@ class MTLScrPredictor:
 
 def predict_on_input_file(input_file_path, model_path=None, output_file_path=None):
     """
-    对输入文件进行MTL-scr多任务预测
-
     Args:
-        input_file_path: 输入文件路径（Excel格式）
-        model_path: 模型文件路径，如果为None则使用默认模型
-        output_file_path: original_file_predicted
+        input_file_path: （Excel）
+        model_path
+        output_file_path
     """
-    print("开始对输入文件进行MTL-scr多任务预测...")
+    print("Perfoming multi-task prediction...")
 
-    # 1. 检查输入文件
     if not os.path.exists(input_file_path):
-        print(f"输入文件不存在: {input_file_path}")
+        print(f"file is not existing: {input_file_path}")
         return
 
-    # 2. 确定模型路径
     if model_path is None:
         model_path = MODEL_PATH
 
     if not os.path.exists(model_path):
-        print(f"模型文件不存在: {model_path}")
+        print(f"model is not existing: {model_path}")
         return
 
-    # 3. 确定输出文件路径
     if output_file_path is None:
         base_name = os.path.splitext(input_file_path)[0]
         output_file_path = f"{base_name}_predicted.xlsx"
 
-    print(f"输入文件: {input_file_path}")
-    print(f"模型文件: {model_path}")
-    print(f"输出文件: {output_file_path}")
-    print(f"使用设备: {device}")
+    print(f"input : {input_file_path}")
+    print(f"model: {model_path}")
+    print(f"output: {output_file_path}")
+    print(f"devie: {device}")
 
-    # 4. 加载MTL-scr模型
     try:
-        # 构建模型 - 使用与Toxicity_MGA_MT.py一致的参数名
+    
         model = MGA(
             in_feats=MODEL_ARGS['in_feats'],
             rgcn_hidden_feats=MODEL_ARGS['rgcn_hidden_feats'],
             n_tasks=MODEL_ARGS['n_tasks'],
             classifier_hidden_feats=MODEL_ARGS['classifier_hidden_feats'],
             rgcn_drop_out=MODEL_ARGS['rgcn_drop_out'],
-            dropout=MODEL_ARGS['dropout'],  # 注意：MGA模型参数名是dropout
+            dropout=MODEL_ARGS['dropout'], 
             loop=MODEL_ARGS['loop']
         )
 
-        # 加载模型权重 - 兼容不同的保存格式
         checkpoint = torch.load(model_path, map_location=device)
 
-        # 检查checkpoint格式
         if 'model_state_dict' in checkpoint:
-            # 新格式：包含完整训练状态
             model.load_state_dict(checkpoint['model_state_dict'])
-            print(f"加载完整checkpoint (epoch: {checkpoint.get('epoch', 'unknown')})")
+            print(f"loading checkpoint (epoch: {checkpoint.get('epoch', 'unknown')})")
         else:
-            # 旧格式：直接是模型状态字典
             model.load_state_dict(checkpoint)
-            print(f"加载模型状态字典")
+            print(f"loading model dict")
 
-        # 移动模型到设备并设置为评估模式
         model.to(device)
         model.eval()
 
-        print(f"MTL-scr模型加载成功（设备: {device}）")
+        print(f"Successfully loading MTL-GCN model（device: {device}）")
     except Exception as e:
-        print(f"模型加载失败: {str(e)}")
+        print(f"failed with MTL-GCN: {str(e)}")
         return
 
-    # 5. 加载输入数据
     try:
-        # 读取Excel文件，确保Canonical smiles列为字符串类型
         df = pd.read_excel(input_file_path, dtype={'Canonical smiles': str})
-        print(f"样本数量: {len(df)}")
+        print(f"Sample number: {len(df)}")
 
-        # 检查必要列
         required_columns = ['Canonical smiles']
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            print(f"输入数据缺少必要列: {missing_columns}")
+            print(f"Input data is missing required columns: {missing_columns}")
             return
 
     except Exception as e:
-        print(f"数据加载失败: {str(e)}")
+        print(f"failed with loading data: {str(e)}")
         return
 
-    # 6. 准备结果DataFrame - 只保留必要信息
-    result_df = df[['Canonical smiles']].copy()  # 只保留原始smiles
+
+    result_df = df[['Canonical smiles']].copy() 
     result_df['error'] = ''
 
-    # 为每个任务添加简化的预测列
     for task_name in TASK_NAMES:
-        result_df[f'{task_name}_prediction'] = -1      # 预测值 0/1
-        result_df[f'{task_name}_probability'] = 0.0    # 预测概率
-        result_df[f'{task_name}_in_AD'] = False        # 是否在应用域内
+        result_df[f'{task_name}_prediction'] = -1      
+        result_df[f'{task_name}_probability'] = 0.0    
+        result_df[f'{task_name}_in_AD'] = False        
 
-    # 7. 验证SMILES并进行预测
-    print("开始多任务预测...")
+    print("Multi-task predicting...")
     valid_indices = []
     valid_canonical_smiles = []
 
     for idx, row in df.iterrows():
         smiles = row['Canonical smiles']
 
-        # 检查SMILES是否为有效的字符串
         if pd.isna(smiles):
-            result_df.loc[idx, 'error'] = "SMILES为空"
+            result_df.loc[idx, 'error'] = "SMILES is Nan"
             continue
-
-        # 确保SMILES是字符串类型
         smiles = str(smiles).strip()
 
         if smiles == '' or smiles == 'nan':
-            result_df.loc[idx, 'error'] = "SMILES为空"
+            result_df.loc[idx, 'error'] = "SMILES is Nan"
             continue
 
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
-                result_df.loc[idx, 'error'] = "无效的SMILES字符串"
+                result_df.loc[idx, 'error'] = "Invalid SMILES"
                 continue
 
             canonical_smiles = Chem.MolToSmiles(mol, isomericSmiles=True)
@@ -336,9 +284,9 @@ def predict_on_input_file(input_file_path, model_path=None, output_file_path=Non
             valid_canonical_smiles.append(canonical_smiles)
 
         except Exception as e:
-            result_df.loc[idx, 'error'] = f"SMILES处理错误: {str(e)}"
+            result_df.loc[idx, 'error'] = f"SMILES error: {str(e)}"
 
-    print(f"有效样本: {len(valid_indices)}/{len(df)}")
+    print(f"Valid sample: {len(valid_indices)}/{len(df)}")
 
     if len(valid_indices) == 0:
         print("没有有效的样本可以预测")
@@ -1061,3 +1009,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
