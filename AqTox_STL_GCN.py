@@ -19,15 +19,10 @@ args = {}
 args['device'] = "cuda" if torch.cuda.is_available() else "cpu"
 args['atom_data_field'] = 'atom'
 args['bond_data_field'] = 'etype'
-# 分类指标
+
 args['classification_AROC'] = 'roc_auc'
 args['classification_RBA']='RBA'
 
-# 回归指标
-args['regression_r2'] = 'r2'
-args['regression_mse'] = 'mse'
-args['regression_mae'] = 'mae'
-args['regression_rmse'] = 'rmse'
 # model parameter
 args['num_epochs'] = 500
 args['patience'] = 50
