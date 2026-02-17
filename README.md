@@ -33,7 +33,8 @@ The STL-GCN model shares the same algorithm as MTL-GCN. There is no need to gene
 
 ST-ML Model codes related to ST classical ML models is located in the '`Classifical_ML_Model`' folder. Prior to execution, various molecular fingerprints must be calculated. The required input file structure and format are provided in this folder.
 
-
+### Application of MTL-GCN Model
+This script (predict_with_AD.py) performs multi-task aquatic toxicity screening using the MTL-GCN model. It integrates an ADSAL assessment to ensure the reliability of the screening.The required input file structure and format are provided in `data` folder (example.csv).
 
 
 
