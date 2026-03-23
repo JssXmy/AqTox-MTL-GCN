@@ -36,6 +36,8 @@ ST-ML Model codes related to ST classical ML models is located in the '`Classifi
 ### Application of MTL-GCN Model
 This script '`Screen_with_AD.py`' performs multi-task aquatic toxicity screening using the MTL-GCN model. It integrates an ADSAL assessment to ensure the reliability of the screening.The required input file structure and format are provided in '`data`' folder ('`example.csv`').
 
+### Pretrained Model Weights
+The trained model weights described in this paper have been uploaded to the **GitHub Releases** page of this repository, so the reported model can be used directly without retraining.Please download the pretrained model weights from:`https://github.com/JssXmy/AqTox-MTL-GCN/releases/tag/model-weight`
 
 
 
