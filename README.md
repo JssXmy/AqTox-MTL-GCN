@@ -39,6 +39,11 @@ This script '`Screen_with_AD.py`' performs multi-task aquatic toxicity screening
 ### Pretrained Model Weights
 The trained model weights described in this paper have been uploaded to the **GitHub Releases** page of this repository, so the reported model can be used directly without retraining.Please download the pretrained model weights from:`https://github.com/JssXmy/AqTox-MTL-GCN/releases/tag/model-weight`
 
+### Model Interpretability
+
+The `interpretation` folder contains the model interpretability scripts (.ipynb) for both the MTL-GCN and STL-GCN models. These notebooks are used to visualize and analyze attention weights, helping to illustrate how the models identify and focus on toxicity-relevant substructures during prediction.
+
+
 
 
 
